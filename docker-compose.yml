@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend  # The directory where your frontend Dockerfile is located
+      dockerfile: Dockerfile
+    # image: frontend:latest  # Image name for the frontend
+    ports:
+      - "5173:5173"  # Expose frontend port
+    networks:
+      - app-network
+    depends_on:
+      - backend  # Wait for the backend service to be ready
+    restart: always  # Ensure the frontend service always restarts
+
+  backend:
+    build:
+      context: ./backend  # The directory where your backend Dockerfile is located
+      dockerfile: Dockerfile
+    # image: backend:latest  # Image name for the backend
+    ports:
+      - "8000:8000"  # Expose backend port
+    networks:
+      - app-network
+    restart: always  # Ensure the backend service always restarts
+
+networks:
+  app-network:
+    driver: bridge
